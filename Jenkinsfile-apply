@@ -17,9 +17,8 @@ pipeline {
       }
     }
     stage ('Apply resources') {
-      steps {
-        when {
-          branch 'master'
+      when {
+        branch 'main'
       }
       steps {
         sh 'oc apply -k config'
@@ -27,12 +26,12 @@ pipeline {
       }
     }
     stage ('Verify test user') {
-      steps {
       when {
         branch 'main'
       }
       steps {
-        sh 'oc login -u testuser -p redhat123 --insecure-skip-tls-verify https://kubernetes.default.svc:443'
+        sh 'oc login -u testuser -p redhat123 --insecure-skip-tls-verify \
+https://kubernetes.default.svc:443'
         sh 'oc new-project test-testuser || true'
       }
     }
